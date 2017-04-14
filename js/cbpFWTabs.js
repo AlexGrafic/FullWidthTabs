@@ -40,7 +40,19 @@
 		// content items
 		this.items = [].slice.call( this.el.querySelectorAll( '.content > section' ) );
 		// current index
-		this.current = -1;
+		var current = -1;
+        	// find hashtag
+        	if(window.location.hash)
+        	{
+            	$.each(this.items, function( key, value ) {
+			if($(value).attr('id') === window.location.hash.substring(1))
+			{
+			    current = key;
+			}
+		    });
+		}
+		// set current if found same id
+		this.current = current;
 		// show current content item
 		this._show();
 		// init events
@@ -67,7 +79,7 @@
             this.items[ this.current ].className = this.items[ this.current ].className.replace(new RegExp('(^|\\s)*' + 'content-current' + '(\\s|$)*', 'g'), '');
 		}
 		// change current
-		this.current = idx != undefined ? idx : this.options.start >= 0 && this.options.start < this.items.length ? this.options.start : 0;
+		this.current = idx !== undefined ? idx : this.current !== -1 ? this.current : this.options.start >= 0 && this.options.start < this.items.length ? this.options.start : 0;
 		this.tabs[ this.current ].className += (this.tabs[ this.current ].className ? ' ' : '') + 'tab-current';
 		this.items[ this.current ].className += (this.items[ this.current ].className ? ' ' : '') + 'content-current';
 	};
